@@ -1,4 +1,4 @@
-# &lt;my-repo&gt;
+# &lt;multi-value-suggestbox&gt;
 
 A Polymer custom element that allows selection of multiple suggestions
 
