@@ -1,0 +1,277 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<polymer-element name="multi-value-suggestbox" attributes="suggestions selectedItems options">
+
+    <template>
+        <style type="text/css" media="screen">
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            ul#item_list {
+                display: block;
+                border: 1px solid #a0a0a0;
+                border-radius: 4px;
+            }
+            ul#item_list > li {
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+            }
+            ul#item_list > li:not(#item_entry) {
+                margin: 4px;
+                padding: 6px 10px 3px 3px;
+                border: 1px solid #ccd5e4;
+                border-radius: 4px;
+                background-color: #f0f0ff;
+                background-color: #eff2f7;
+                font-size: 11pt;
+                color: #000000;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                cursor: default;
+            }
+            ul#item_list > li > a {
+                width: 7px;
+                height: 7px;
+                display: block;
+                position: absolute;
+                top: 1px;
+                right: 1px;
+                border: 1px solid #ff8888;
+                border-radius: 4px;
+                font-family: monospace;
+                font-size: 6px;
+                font-weight: bolder;
+                color: #ff8888;
+                text-align: center;
+                text-decoration: none;
+                line-height: 7px;
+                cursor: pointer;
+            }
+            ul#item_list > li > a::after {
+                content: 'X';
+            }
+            #item_entry {
+                position: relative;
+            }
+            #item_entry > div {
+                display: inline;
+                padding: 3px 5px;
+                box-sizing: border-box;
+                line-height: 50px;
+            }
+            #item_entry > div > span {
+                min-width: 40px;
+                display: inline-block;
+                font-size: 11pt;
+                line-height: 150%;
+                vertical-align: middle;
+            }
+            #item_entry > div > span:focus {
+                outline-style: none;
+            }
+            ul#suggest_menu {
+                display: block;
+                position: absolute;
+                left: 4px;
+                -webkit-box-shadow: 0px 4px 6px 0px rgba(50, 50, 50, 0.75);
+                -moz-box-shadow:    0px 4px 6px 0px rgba(50, 50, 50, 0.75);
+                box-shadow:         0px 4px 6px 0px rgba(50, 50, 50, 0.75);
+                background-color: #ffffff;
+            }
+            ul#suggest_menu li {
+                min-width: 100%;
+                padding: 5px 10px;
+                box-sizing: border-box;
+                font-size: 11pt;
+                cursor: pointer;
+            }
+            ul#suggest_menu li.active {
+                background-color: #ffe000;
+            }
+        </style>
+        <ul id="item_list" style="width: {{options.box_width}};" on-tap="{{elementTapped}}">
+            <template repeat="{{item in selectedItems}}">
+                <li style="max-width: calc( {{options.box_width}} - 25px);">{{item}}<a on-tap="{{removeTapped}}"></a></li>
+            </template>
+            <li id="item_entry">
+                <div style="line-height: {{options.box_height}};">
+                    <span id="item_input"
+                        style="max-width: calc( {{options.box_width}} - 5px);"
+                        contenteditable="true"
+                        on-keydown="{{keydownHandler}}"
+                        on-keypress="{{keypressHandler}}">
+                    </span>
+                </div>
+                <template if="{{suggestions.length > 0}}">
+                    <ul id="suggest_menu">
+                        <template repeat="{{item in suggestions}}">
+                            <li on-tap="{{suggestionTapped}}"
+                                on-mouseover="{{suggestionHovered}}">{{item}}</li>
+                        </template>
+                    </ul>
+                </template>
+            </li>
+        </ul>
+    </template>
+
+    <script>
+        var calculateLiIndex = function(item) {
+            var index = 0;
+            while((item = item.previousSibling) !== null) {
+                if (item.nodeType === 1 && item.tagName.toLowerCase() === 'li') {
+                    index++;
+                }
+            }
+            return index;
+        };
+
+        var getPreviousLi = function(item) {
+            var previousLi = null;
+            while((item = item.previousSibling) !== null) {
+                if (item.nodeType === 1 && item.tagName.toLowerCase() === 'li') {
+                    previousLi = item;
+                    break;
+                }
+            }
+            return previousLi;
+        };
+
+        var addClass = function(element, cName) {
+            if (element) {
+                if (element.className.length > 0) {
+                    element.className += ' ';
+                }
+                element.className += cName;
+            }
+        };
+
+        var removeClass = function(element, cName) {
+            if (element) {
+                element.className = element.className.replace(new RegExp('(?:^|\\s)'+cName+'(?!\\S)'), '');
+            }
+        };
+
+        Polymer('multi-value-suggestbox', {
+            suggestions: [],
+
+            selectedItems: [],
+
+            options: {},
+
+            // Fires when the "<multi-value-suggestbox>" has been fully prepared
+            ready: function() {
+                // if not set by user, use default values
+                if (!this.options.box_width) this.options.box_width = "200px";
+                if (!this.options.box_height) this.options.box_height = "40px";
+                if (!this.options.allow_space) this.options.allow_space = false;
+                if (!this.options.allow_nonmatching) this.options.allow_nonmatching = false;
+            },
+
+            elementTapped: function(event, detail, sender) {
+                this.setFocus();
+            },
+
+            suggestionTapped: function(event, detail, sender) {
+                this.selectedItems.push(sender.innerText);
+
+                // reset input
+                this.$.item_input.innerText = '';
+
+                this.resetSuggestions();
+            },
+
+            suggestionHovered: function(event, detail, sender) {
+                removeClass(this.$.item_list.querySelector('#suggest_menu li.active'), 'active');
+                addClass(sender, 'active');
+            },
+
+            removeTapped: function(event, detail, sender) {
+                this.selectedItems.splice(calculateLiIndex(sender.parentNode), 1);
+            },
+
+            keydownHandler: function(event, detail, sender) {
+                var activeSuggestion;
+                switch(event.keyCode) {
+                    case 8:  // backspace
+                        var numItems = this.$.item_list.children.length;
+                        if (sender.innerText.length === 0 && numItems > 1) {
+                            this.$.item_list.removeChild(this.$.item_list.children[numItems-2]);
+                        }
+                        break;
+
+                    case 32:  // spacebar
+                        if (this.options.allow_space === true) {
+                            this.fireInputChangedEvent();
+                            break;
+                        }
+                        // else fall through
+                    case 13:  // enter
+                        activeSuggestion = this.$.item_list.querySelector('#suggest_menu li.active');
+                        var topSuggestion = this.$.item_list.querySelector('#suggest_menu li');
+                        if (activeSuggestion) {
+                            this.selectedItems.push(activeSuggestion.innerText);
+                            this.$.item_input.innerText = '';
+                            this.resetSuggestions();
+                        } else if (this.options.allow_nonmatching === true || this.$.item_input.innerText === topSuggestion.innerText) {
+                            this.selectedItems.push(sender.innerText);
+                            this.$.item_input.innerText = '';
+                            this.resetSuggestions();
+                        }
+                        event.preventDefault();
+                        break;
+
+                    case 27:  // escape
+                        if (this.options.allow_nonmatching === true || this.suggestions.length > 0) {
+                            this.resetSuggestions();
+                            event.preventDefault();
+                        }
+                        break;
+
+                    case 38:  // up arrow
+                        activeSuggestion = this.$.item_list.querySelector('#suggest_menu li.active');
+                        var prev = getPreviousLi(activeSuggestion);
+                        removeClass(activeSuggestion, 'active');
+                        if (prev) {
+                            addClass(prev, 'active');
+                        } else {
+                            addClass(this.$.item_list.querySelector('#suggest_menu li:last-of-type'), 'active');
+                        }
+                        break;
+
+                    case 40:  // down arrow
+                        activeSuggestion = this.$.item_list.querySelector('#suggest_menu li.active');
+                        var next = this.$.item_list.querySelector('#suggest_menu li.active ~ li');
+                        removeClass(activeSuggestion, 'active');
+                        if (next) {
+                            addClass(next, 'active');
+                        } else {
+                            addClass(this.$.item_list.querySelector('#suggest_menu li'), 'active');
+                        }
+                        break;
+                }
+            },
+
+            keypressHandler: function(event, detail, sender) {
+                this.fireInputChangedEvent();
+            },
+
+            fireInputChangedEvent: function() {
+                this.fire('input-changed', { newInput: this.$.item_input.innerText });
+            },
+
+            resetSuggestions: function() {
+                while (this.suggestions.length > 0) {
+                    this.suggestions.pop();
+                }
+            },
+
+            setFocus: function() {
+                this.$.item_input.focus();
+            }
+        });
+    </script>
+
+</polymer-element>
