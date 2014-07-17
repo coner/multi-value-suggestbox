@@ -1,4 +1,4 @@
-# &lt;my-repo&gt;
+# &lt;multi-value-suggestbox&gt;
 
 A Polymer custom element that allows selection of multiple suggestions
 
@@ -14,7 +14,7 @@ Install the component using [Bower](http://bower.io/):
 $ bower install multi-value-suggestbox --save
 ```
 
-Or [download as ZIP](https://github.com/my-user/my-repo/archive/master.zip).
+Or [download as ZIP](https://github.com/coner/multi-value-suggestbox/archive/master.zip).
 
 ## Usage
 
