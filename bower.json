@@ -10,6 +10,6 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#~0.3.3",
-    "multi-value-suggestbox": "~0.1.1"
+    "multi-value-suggestbox": "~0.1.2"
   }
 }
