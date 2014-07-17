@@ -1,0 +1,15 @@
+{
+  "name": "multi-value-suggestbox-gh-pages",
+  "version": "0.1.0",
+  "description": "Github pages for multi-value-suggestbox custom element",
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.3",
+    "multi-value-suggestbox": "~0.1.0"
+  }
+}

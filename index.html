@@ -9,6 +9,9 @@
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <title>&lt;multi-value-suggestbox&gt;</title>
+
+    <script src="bower_components/platform/platform.js"></script>
+    <link rel="import" href="bower_components/multi-value-suggestbox/dist/multi-value-suggestbox.html">
   </head>
 
   <body>
@@ -32,38 +35,85 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="the-custom-element" class="anchor" href="#the-custom-element"><span class="octicon octicon-link"></span></a>The Custom Element</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+  <multi-value-suggestbox id="multi_suggest"
+          options='{
+              "allow_space": true,
+              "allow_nonmatching": true
+          }'>
+  </multi-value-suggestbox>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+  <script>
+    addEventListener('polymer-ready', function() {
+      document.querySelector('#multi_suggest').setFocus();
+    });
+    addEventListener('input-changed', function(e) {
+      var el = document.querySelector('#multi_suggest');
+      el.suggestions = ["Alice", "Ali", "Bob", "Fitzpatrick", "Juan", "Kaya", "Thomas", "Zed"];
+    });
+  </script>
+
+<p>This is a simple example, where the same set of suggestions are supplied with each <code>input-changed</code> event.  In your apps, you can analyze the <code>newInput</code> field of <code>input-changed</code> events to provide matching suggestions.</p>
+
+<h3>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick Start</h3>
+
+<p>Declare a dependency in your <code>bower.json</code>:</p>
+
+<pre><code>{
+  ...
+  "dependencies": {
+    "multi-value-suggestbox": "~0.1.0"
+  }
+}
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Install:</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<pre><code>$ bower install
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Import dependencies from your HTML:</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<pre><code>&lt;html&gt;
+  &lt;head&gt;
+    ...
+    &lt;script src=&quot;bower_components/platform/platform.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;import&quot; href=&quot;bower_components/multi-value-suggestbox/dist/multi-value-suggestbox.html&quot;&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+  &lt;/body&gt;
+  &lt;/html&gt;
+</code></pre>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Place the custom element in your HTML and listen for <code>input-changed</code> events:</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<pre><code>&lt;html&gt;
+  &lt;head&gt;
+    ...
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;multi-value-suggestbox id=&quot;multi_suggest&quot;
+            options='{
+                &quot;allow_space&quot;: true,
+                &quot;allow_nonmatching&quot;: true
+            }'&gt;
+    &lt;/multi-value-suggestbox&gt;
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
+    &lt;script&gt;
+      addEventListener('polymer-ready', function() {
+        document.querySelector('#multi_suggest').setFocus();
+      });
+      addEventListener('input-changed', function(e) {
+        var el = document.querySelector('#multi_suggest');
+        el.suggestions = [&quot;Alice&quot;, &quot;Ali&quot;, &quot;Bob&quot;, &quot;Fitzpatrick&quot;, &quot;Juan&quot;, &quot;Kaya&quot;, &quot;Thomas&quot;, &quot;Zed&quot;];
+      });
+    &lt;/script&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+</code></pre>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
@@ -72,8 +122,6 @@ $ git checkout gh-pages
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    
 
   </body>
 </html>
