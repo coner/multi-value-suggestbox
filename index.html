@@ -37,13 +37,15 @@
         <h3>
 <a name="the-custom-element" class="anchor" href="#the-custom-element"><span class="octicon octicon-link"></span></a>The Custom Element</h3>
 
+  <pre><code>
   <multi-value-suggestbox id="multi_suggest"
           options='{
+              "box_width": "800px",
               "allow_space": true,
               "allow_nonmatching": true
           }'>
   </multi-value-suggestbox>
-
+  </code></pre>
   <script>
     addEventListener('polymer-ready', function() {
       document.querySelector('#multi_suggest').setFocus();
@@ -53,6 +55,8 @@
       el.suggestions = ["Alice", "Ali", "Bob", "Fitzpatrick", "Juan", "Kaya", "Thomas", "Zed"];
     });
   </script>
+
+<br /><br /><br />
 
 <p>This is a simple example, where the same set of suggestions are supplied with each <code>input-changed</code> event.  In your apps, you can analyze the <code>newInput</code> field of <code>input-changed</code> events to provide matching suggestions.</p>
 
@@ -68,13 +72,13 @@
   }
 }
 </code></pre>
-<br />
+<br /><br />
 
 <p>Install:</p>
 
 <pre><code>$ bower install
 </code></pre>
-<br />
+<br /><br />
 
 <p>Import dependencies from your HTML:</p>
 
@@ -89,7 +93,7 @@
   &lt;/body&gt;
   &lt;/html&gt;
 </code></pre>
-<br />
+<br /><br />
 
 <p>Place the custom element in your HTML and listen for <code>input-changed</code> events:</p>
 
@@ -117,7 +121,7 @@
   &lt;/body&gt;
   &lt;/html&gt;
 </code></pre>
-<br />
+<br /><br />
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
