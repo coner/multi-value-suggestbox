@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>&lt;multi-value-suggestbox&gt;</title>
+
+  <!-- Importing Web Component's Polyfill -->
+  <script src="bower_components/platform/platform.js"></script>
+
+  <!-- Importing Custom Elements -->
+  <link rel="import" href="src/multi-value-suggestbox.html">
+</head>
+<body>
+  <multi-value-suggestbox id="multi_suggest"
+          options='{
+              "allow_space": true,
+              "allow_nonmatching": true
+          }'>
+  </multi-value-suggestbox>
+
+  <script>
+    addEventListener('polymer-ready', function() {
+      document.querySelector('#multi_suggest').setFocus();
+    });
+    addEventListener('input-changed', function(e) {
+      var el = document.querySelector('#multi_suggest');
+      el.suggestions = ["Alice", "Ali", "Bob", "Fitzpatrick", "Juan", "Kaya", "Thomas", "Zed"];
+    });
+  </script>
+</body>
+</html>

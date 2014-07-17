@@ -1,0 +1,19 @@
+{
+    "name": "multi-value-suggestbox",
+    "version": "0.1.0",
+    "description": "A suggestbox that allows multiple values to be selected",
+    "license": "BSD",
+    "main": "dist/multi-value-suggestbox.html",
+    "keywords": [
+        "polymer",
+        "web-components"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+    "dependencies": {
+        "polymer": "Polymer/polymer#~0.3.3"
+    }
+}
