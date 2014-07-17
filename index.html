@@ -37,7 +37,7 @@
         <h3>
 <a name="the-custom-element" class="anchor" href="#the-custom-element"><span class="octicon octicon-link"></span></a>The Custom Element</h3>
 
-  <pre><code>
+  <div style="background-color: #ffffff;">
   <multi-value-suggestbox id="multi_suggest"
           options='{
               "box_width": "800px",
@@ -45,7 +45,7 @@
               "allow_nonmatching": true
           }'>
   </multi-value-suggestbox>
-  </code></pre>
+  </div>
   <script>
     addEventListener('polymer-ready', function() {
       document.querySelector('#multi_suggest').setFocus();
@@ -82,7 +82,7 @@
 
 <p>Import dependencies from your HTML:</p>
 
-<div style="background-color: #ffffff;">&lt;html&gt;
+<pre><code>&lt;html&gt;
   &lt;head&gt;
     ...
     &lt;script src=&quot;bower_components/platform/platform.js&quot;&gt;&lt;/script&gt;
@@ -92,7 +92,7 @@
     ...
   &lt;/body&gt;
   &lt;/html&gt;
-</div>
+</code></pre>
 <br /><br />
 
 <p>Place the custom element in your HTML and listen for <code>input-changed</code> events:</p>
