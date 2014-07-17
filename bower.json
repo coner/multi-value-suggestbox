@@ -1,6 +1,6 @@
 {
     "name": "multi-value-suggestbox",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "A suggestbox that allows multiple values to be selected",
     "license": "BSD",
     "main": "dist/multi-value-suggestbox.html",
