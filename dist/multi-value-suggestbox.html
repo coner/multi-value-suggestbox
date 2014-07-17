@@ -101,8 +101,7 @@
                     <span id="item_input"
                         style="max-width: calc( {{options.box_width}} - 5px);"
                         contenteditable="true"
-                        on-keydown="{{keydownHandler}}"
-                        on-keypress="{{keypressHandler}}">
+                        on-keydown="{{keydownHandler}}">
                     </span>
                 </div>
                 <template if="{{suggestions.length > 0}}">
@@ -193,18 +192,19 @@
             },
 
             keydownHandler: function(event, detail, sender) {
+                var inputChanged = true;
                 var activeSuggestion;
                 switch(event.keyCode) {
                     case 8:  // backspace
                         var numItems = this.$.item_list.children.length;
                         if (sender.innerText.length === 0 && numItems > 1) {
                             this.$.item_list.removeChild(this.$.item_list.children[numItems-2]);
+                            inputChanged = false;
                         }
                         break;
 
                     case 32:  // spacebar
                         if (this.options.allow_space === true) {
-                            this.fireInputChangedEvent();
                             break;
                         }
                         // else fall through
@@ -220,6 +220,7 @@
                             this.$.item_input.innerText = '';
                             this.resetSuggestions();
                         }
+                        inputChanged = false;
                         event.preventDefault();
                         break;
 
@@ -228,6 +229,7 @@
                             this.resetSuggestions();
                             event.preventDefault();
                         }
+                        inputChanged = false;
                         break;
 
                     case 38:  // up arrow
@@ -239,6 +241,7 @@
                         } else {
                             addClass(this.$.item_list.querySelector('#suggest_menu li:last-of-type'), 'active');
                         }
+                        inputChanged = false;
                         break;
 
                     case 40:  // down arrow
@@ -250,12 +253,22 @@
                         } else {
                             addClass(this.$.item_list.querySelector('#suggest_menu li'), 'active');
                         }
+                        inputChanged = false;
+                        break;
+
+                    case 9:  // tab
+                    case 16:  // shift
+                    case 17:  // ctrl
+                    case 18:  // alt
+                    case 37:  // left arrow
+                    case 39:  // right arrow
+                        inputChanged = false;
                         break;
                 }
-            },
 
-            keypressHandler: function(event, detail, sender) {
-                this.fireInputChangedEvent();
+                if (inputChanged === true) {
+                    this.fireInputChangedEvent();
+                }
             },
 
             fireInputChangedEvent: function() {
