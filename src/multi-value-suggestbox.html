@@ -101,7 +101,8 @@
                     <span id="item_input"
                         style="max-width: calc( {{options.box_width}} - 5px);"
                         contenteditable="true"
-                        on-keydown="{{keydownHandler}}">
+                        on-keydown="{{keydownHandler}}"
+                        on-keyup="{{keyupHandler}}">
                     </span>
                 </div>
                 <template if="{{suggestions.length > 0}}">
@@ -129,10 +130,12 @@
 
         var getPreviousLi = function(item) {
             var previousLi = null;
-            while((item = item.previousSibling) !== null) {
-                if (item.nodeType === 1 && item.tagName.toLowerCase() === 'li') {
-                    previousLi = item;
-                    break;
+            if (item) {
+                while((item = item.previousSibling) !== null) {
+                    if (item.nodeType === 1 && item.tagName.toLowerCase() === 'li') {
+                        previousLi = item;
+                        break;
+                    }
                 }
             }
             return previousLi;
@@ -192,14 +195,11 @@
             },
 
             keydownHandler: function(event, detail, sender) {
-                var inputChanged = true;
                 var activeSuggestion;
                 switch(event.keyCode) {
                     case 8:  // backspace
-                        var numItems = this.$.item_list.children.length;
-                        if (sender.innerText.length === 0 && numItems > 1) {
-                            this.$.item_list.removeChild(this.$.item_list.children[numItems-2]);
-                            inputChanged = false;
+                        if (sender.innerText.length === 0 && this.selectedItems.length > 0) {
+                            this.selectedItems.pop();
                         }
                         break;
 
@@ -215,7 +215,8 @@
                             this.selectedItems.push(activeSuggestion.innerText);
                             this.$.item_input.innerText = '';
                             this.resetSuggestions();
-                        } else if (this.options.allow_nonmatching === true || this.$.item_input.innerText === topSuggestion.innerText) {
+                        } else if ((this.options.allow_nonmatching === true && this.$.item_input.innerText.length > 0) ||
+                                this.$.item_input.innerText === topSuggestion.innerText) {
                             this.selectedItems.push(sender.innerText);
                             this.$.item_input.innerText = '';
                             this.resetSuggestions();
@@ -255,13 +256,29 @@
                         }
                         inputChanged = false;
                         break;
+                }
+            },
+
+            keyupHandler: function(event, detail, sender) {
+                var inputChanged = true;
+                var activeSuggestion;
+                switch(event.keyCode) {
+                    case 8:  // backspace
+                        if (sender.innerText.length === 0) {
+                            inputChanged = false;
+                        }
+                        break;
 
                     case 9:  // tab
+                    case 13:  // enter
                     case 16:  // shift
                     case 17:  // ctrl
                     case 18:  // alt
+                    case 27:  // escape
                     case 37:  // left arrow
+                    case 38:  // up arrow
                     case 39:  // right arrow
+                    case 40:  // down arrow
                         inputChanged = false;
                         break;
                 }

@@ -41,7 +41,7 @@ Or [download as ZIP](https://github.com/coner/multi-value-suggestbox/archive/mas
 Attribute                   | Options     | Default   | Description
 ---                         | ---         | ---       | ---
 `options.box_width`         | *string*    | `200px`   | Width of the input box
-`options.box_width`         | *string*    | `40px`    | Height of the input box
+`options.box_height`        | *string*    | `40px`    | Height of the input box
 `options.allow_space`       | *bool*      | `false`   | Whether spaces are accepted
 `options.allow_nonmatching` | *bool*      | `false`   | Whether non-suggested values are accepted
 
@@ -50,6 +50,7 @@ Attribute                   | Options     | Default   | Description
 Method               | Parameters   | Returns     | Description
 ---                  | ---          | ---         | ---
 `resetSuggestions()` | None.        | Nothing.    | Removes all suggestions currently displayed in the menu.
+`setFocus()`         | None.        | Nothing.    | Sets focus to the element's text input field.
 
 ## Events
 
