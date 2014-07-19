@@ -1,6 +1,6 @@
 {
   "name": "multi-value-suggestbox",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "A suggestbox that allows multiple values to be selected",
   "license": "BSD",
   "main": "dist/multi-value-suggestbox.html",
@@ -17,13 +17,13 @@
     "polymer": "Polymer/polymer#~0.3.3"
   },
   "homepage": "https://github.com/coner/multi-value-suggestbox",
-  "_release": "0.1.2",
+  "_release": "0.1.4",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.2",
-    "commit": "54a3226b83db46150ef0be38afdbcc04435f9773"
+    "tag": "0.1.4",
+    "commit": "1aa8d5e3bb8ef1b557126c4d7734ab09ec77a55c"
   },
   "_source": "git://github.com/coner/multi-value-suggestbox.git",
-  "_target": "~0.1.2",
+  "_target": "~0.1.4",
   "_originalSource": "multi-value-suggestbox"
 }
